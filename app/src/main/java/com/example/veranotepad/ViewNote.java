@@ -1,5 +1,6 @@
 package com.example.veranotepad;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,7 @@ public class ViewNote extends AppCompatActivity {
     TextView tvtitle;
     TextView tvNoteText;
     Button btnDelete;
+    Button btnEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,8 @@ public class ViewNote extends AppCompatActivity {
         getNoteId();
         tvtitle = findViewById(R.id.title);
         tvNoteText = findViewById(R.id.NoteText);
-        btnDelete = findViewById(R.id.btnDelete);
+        btnDelete = findViewById(R.id.delete);
+        btnEdit = findViewById(R.id.edit);
         displayNotes();
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +41,14 @@ public class ViewNote extends AppCompatActivity {
                 DatabaseHelper databaseHelper =new DatabaseHelper(getBaseContext(),"Delete",null,1);
                 databaseHelper.deleteNote(6);
                 finish();
+            }
+        });
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getBaseContext(),EditNoteActivity.class);
+                intent.putExtra("Note_ID",noteId);
+                startActivity(intent);
             }
         });
 

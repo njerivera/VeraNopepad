@@ -2,4 +2,5 @@
 <resources>
     <item name="viewNote" type="id" />
     <item name="btnDelete" type="id" />
+    <item name="btnEditNote" type="id" />
 </resources>

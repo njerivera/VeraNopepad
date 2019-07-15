@@ -38,12 +38,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return insert;
     }
+
     public List<Note> getNotes() {
         List<Note> noteList = new ArrayList<Note>();
         String query = "SELECT* FROM notes";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        if (cursor.moveToFirst()==true) {
+        if (cursor.moveToFirst() == true) {
             do {
                 Note note = new Note();
                 note.setId(cursor.getInt(cursor.getColumnIndex("id")));
@@ -52,20 +53,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 noteList.add(note);
 
 
-
             }
-            while (cursor.moveToNext()==true);
+            while (cursor.moveToNext() == true);
         }
         sqLiteDatabase.close();
         return noteList;
 
     }
-    public  Note getNoteById(int id ) {
+
+    public Note getNoteById(int id) {
         Note note = new Note();
         String query = "SELECT * FROM notes WHERE id=?";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery(query,new String[]{String.valueOf(id)});
-        if (cursor.moveToFirst()==true){
+        Cursor cursor = sqLiteDatabase.rawQuery(query, new String[]{String.valueOf(id)});
+        if (cursor.moveToFirst() == true) {
             note.setId(cursor.getInt(cursor.getColumnIndex("id")));
             note.setTitle(cursor.getString(cursor.getColumnIndex("title")));
             note.setNoteText(cursor.getString(cursor.getColumnIndex("noteText")));
@@ -73,17 +74,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.close();
         return note;
     }
-    public  void deleteNote(int id){
+
+    public void deleteNote(int id) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String tableName="notes";
-        String whereClause="id=?";
-        String[] whereArgs=new  String[]{String.valueOf(id)};
-        sqLiteDatabase.delete(tableName,whereClause,whereArgs);
-
-
+        String tableName = "notes";
+        String whereClause = "id=?";
+        String[] whereArgs = new String[]{String.valueOf(id)};
+        sqLiteDatabase.delete(tableName, whereClause, whereArgs);
 
 
     }
 
+    public int updateNote(Note note) {
 
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("noteText", note.getNoteText());
+        contentValues.put("title", note.getTitle());
+
+        return sqLiteDatabase.update("notes", contentValues, "Id " + "=?",
+                new String[]{String.valueOf(note.getId())});
+
+
+    }
 }
